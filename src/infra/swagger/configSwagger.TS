@@ -1,4 +1,4 @@
-import fs = require('fs');
+import fs from 'fs';
 
 export class ConfigSwagger {
     swaggerFile: any = (process.cwd() + "/src/infra/swagger/swagger.json");

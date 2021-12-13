@@ -9,15 +9,15 @@ Seguido do comando
 ```
 npm run dev.
 ```
-
-Para Verificar os testes automatizados basta rodar o comando 
-```
-npm test.
-```
 Tecnologias utilizadas: 
 * TypeScript para desenvolvimento do código
 * Visual Stude Code como editor de texto 
 * Github para armazenamento do repositório
 * XAMPP para utilização do banco de dados MySQL
 * Testes Automatizados feitos com Jest
+* Documentação feita com Swagger
 
+Observação para Verificar os testes automatizados basta comentar as linhas referentes ao Swagger no arquivo routes.ts e rodar o comando 
+```
+npm test.
+```

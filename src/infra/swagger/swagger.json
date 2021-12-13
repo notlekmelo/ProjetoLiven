@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a simple example NodeJS API project to demonstrate Swagger Documentation",
+        "description": "Documentação Swagger do Projeto Liven",
         "version": "1.0.0",
-        "title": "Tasks API",
+        "title": "Projeto Liven",
         "contact": {
             "email": "keltonmof@gmail.com"
         },
@@ -22,8 +22,12 @@
             "post": {
                 "summary": "Cadastra um usuário",
                 "description": "Cadastra um usuário com base nos parâmetros enviados",
-                "produces": ["application/json"],
-                "consumes": ["application/json"],
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                         "in": "body",
@@ -43,16 +47,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Usuário incluído",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/createUserResponse"
                             }
                         }
                     },
                     "500": {
-                        "description": "Invalid status value",
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
                         "schema": {
                             "$ref": "#/definitions/InvalidResponse"
                         }
@@ -60,10 +70,10 @@
                 }
             }
         },
-        "/todo": {
-            "post": {
-                "summary": "Save the task",
-                "description": "Save the task",
+        "/login": {
+            "get": {
+                "summary": "Login do usuário",
+                "description": "Com base no login e senha retorna um token de acesso",
                 "produces": [
                     "application/json"
                 ],
@@ -74,12 +84,78 @@
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "task object",
+                        "description": "Objeto Login",
                         "required": true,
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "task": {
+                                "User": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/login"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login efetuado com sucesso",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/loginResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/updateUser": {
+            "post": {
+                "summary": "Atualiza usuário logado",
+                "description": "Atualiza o usuário logado com base nos parâmetros enviados",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "header",
+                        "description": "Envia o Token",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Objeto Usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "User": {
                                     "type": "object",
                                     "$ref": "#/definitions/User"
                                 }
@@ -89,16 +165,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Usuário atualizado",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/updateUserResponse"
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid status value",
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
                         "schema": {
                             "$ref": "#/definitions/InvalidResponse"
                         }
@@ -106,32 +188,42 @@
                 }
             }
         },
-        "/todos/{id}": {
-            "put": {
-                "summary": "Update the tasks",
-                "description": "Update the tasks",
+        "/deleteUser": {
+            "post": {
+                "summary": "Deleta usuário logado",
+                "description": "Deleta o usuário logado com base no token",
                 "produces": [
+                    "application/json"
+                ],
+                "consumes": [
                     "application/json"
                 ],
                 "parameters": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "task id that needs to be deleted",
+                        "in": "header",
+                        "name": "header",
+                        "description": "Envia o Token",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string",
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     },
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "task object",
+                        "description": "Objeto Usuário",
                         "required": true,
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "task": {
+                                "User": {
                                     "type": "object",
-                                    "$ref": "#/definitions/Task"
+                                    "$ref": "#/definitions/deleteUser"
                                 }
                             }
                         }
@@ -139,16 +231,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Usuário atualizado",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/todosResponse"
+                                "$ref": "#/definitions/deleteUserResponse"
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid status value",
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
                         "schema": {
                             "$ref": "#/definitions/InvalidResponse"
                         }
@@ -158,20 +256,14 @@
         }
     },
     "definitions": {
-        "todosResponse": {
+        "createUserResponse": {
             "type": "object",
             "properties": {
-                "id": {
+                "statusCode": {
                     "type": "integer"
                 },
-                "task": {
-                    "type": "string"
-                },
-                "assignee": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
+                "userId": {
+                    "type": "integer"
                 }
             }
         },
@@ -205,12 +297,63 @@
             "type": "object",
             "properties": {
                 "statusCode": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "message": {
                     "type": "string"
                 }
             }
+        },
+        "login": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "loginResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "updateUserResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "updated": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "deleteUser": {
+            "type": "object",
+            "properties": {}
+        },
+        "deleteUserResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "deleted": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "token": {
+            "type": "string"
         }
     }
 }
