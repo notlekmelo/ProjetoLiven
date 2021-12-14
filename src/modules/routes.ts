@@ -1,12 +1,13 @@
-import express, { Request, Response } from "express";
+import express, { Request, response, Response } from "express";
 import { User } from './users/users';
 import * as userService from './users/userServices';
-import swaggerUi from 'swagger-ui-express';
-import { ConfigSwagger } from '../infra/swagger/configSwagger';
 import * as userController from './users/userController';
-import jwt from 'jsonwebtoken';
-import jwt_decode from 'jwt-decode'
+import { Address } from './addresses/addresses';
+import * as addressService from './addresses/addressServices';
+import * as addressController from './addresses/addressController';
+import swaggerUi from 'swagger-ui-express';
 import * as token from '../infra/server/token'
+// import { ConfigSwagger } from '../infra/swagger/configSwagger';
 
 
 const routes = express.Router();
@@ -30,7 +31,7 @@ routes.post('/createUser', async (req: Request, res: Response) => {
                 }
                 res.status(200).json({
                     "statusCode": 200,
-                    "userId": userId
+                    "userCode": userId
                 });
             });
         }
@@ -122,9 +123,43 @@ routes.post('/deleteUser', token.ValidaToken, async (req: Request, res: Response
     });
 });
 
-const configSwagger = new ConfigSwagger();
-routes.use('/api/docs', swaggerUi.serve,
-    swaggerUi.setup(configSwagger.swaggerDocument));
+routes.post('/createAddress', token.ValidaToken,async(req: Request, res : Response) => {
+    const newAddress : Address = req.body.Address;
+    addressController.validaParamCreateAdress(newAddress, (paramValido : boolean, message : string)=> {
+        if(!paramValido){
+            res.status(422).json({
+                "statusCode" : 422,
+                "message": message
+            });
+        }
+        else {
+            addressService.createAddress(newAddress, (err : Error, insertId : number) => {
+                if(err){
+                    res.status(500).json({
+                        "statusCode": 500,
+                        "message" : err.message
+                    })
+                }
+                else {
+                    res.status(200).json({
+                        "statusCode": 200,
+                        "addressCode" : insertId
+                    })
+                }
+            });
+        }
+    });
+});
+
+routes.post('/updateAddress', token.ValidaToken,async(req: Request, res : Response) => {
+    const newAddress : Address = req.body.Address;
+    // Todo
+});
+
+
+// const configSwagger = new ConfigSwagger();
+// routes.use('/api/docs', swaggerUi.serve,
+//     swaggerUi.setup(configSwagger.swaggerDocument));
 
 routes.get('/', function (req, res) {
     res.send('Bem vindo ao gerenciador de usuários e endereços');

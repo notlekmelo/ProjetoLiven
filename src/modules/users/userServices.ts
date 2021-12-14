@@ -4,7 +4,8 @@ import { OkPacket, RowDataPacket } from "mysql2";
 import jwt from 'jsonwebtoken';
 
 export const createUser = (user: User, callback: Function) => {
-    const queryString = "INSERT INTO `Users`(`Name`, `Login`, `Password`, `Nickname`, `Email`, `PhoneNumber`, `Job`, `CreatedAt`) VALUES (?, ?, ?, ?, ?, ?, ? , Now())"
+    const queryString = "INSERT INTO `Users`(`Name`, `Login`, `Password`, `Nickname`, `Email`, "+
+                        " `PhoneNumber`, `Job`, `CreatedAt`) VALUES (?, ?, ?, ?, ?, ?, ? , Now())"
     
     dbconnection.query(
         queryString,
@@ -46,7 +47,8 @@ export const login = (user : User, callback: Function) => {
 }
 
 export const updateUser = (user: User, callback: Function) => {
-    const queryString = "UPDATE `Users` SET `Name` = ?, `Login` = ?, `Password` = ?, `Nickname` = ?, `Email` = ?, `PhoneNumber` = ?, `Job` = ?, `ModifiedAt` = Now() WHERE UserCode = ?"
+    const queryString = "UPDATE `Users` SET `Name` = ?, `Login` = ?, `Password` = ?, `Nickname` = ?,"+
+                        " `Email` = ?, `PhoneNumber` = ?, `Job` = ?, `ModifiedAt` = Now() WHERE UserCode = ?"
     
     dbconnection.query(
         queryString,

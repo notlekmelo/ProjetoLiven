@@ -3,20 +3,17 @@ import server from '../../infra/server/server';
 
 var token : string;
 
-describe('User', () => {
+describe('Address', () => {
 
     it('create user', (done) => {
         request(server)
             .post('/createUser')
             .send({
                 "User": {
-                    "name": "Kelton Melo de Oliveira Fonseca",
-                    "login": "notlekmel1o",
-                    "password": "123",
-                    "nickname": "Kelton",
-                    "email": "keltonmof@gmail.com",
-                    "phoneNumber": "994701172",
-                    "job": "Programador"
+                    "name": "TesteEndereço",
+                    "login": "address",
+                    "password": "add",
+                    "nickname": "Teste"
                 }
             })
             .end((err, response) => {
@@ -31,8 +28,8 @@ describe('User', () => {
             .get('/login')
             .send({
                 "User":{
-                    "login" : "notlekmel1o",
-                    "password" : "123"
+                    "login" : "address",
+                    "password" : "add"
                 }
             })
             .end((err, response) => {
@@ -45,23 +42,27 @@ describe('User', () => {
             });
     });
 
-    it("Atualização de usuário",(done) => {
+    it('Criar um endereço vinculado a um usuário', (done) => {
         request(server)
-            .post('/updateUser')
+            .post('/createAddress')
             .set('x-access-token', token)
             .send({
-                "User":{
-                    "name": "Kelton Melo de Oliveira Fonseca",
-                    "login": "string",
-                    "password": "123",
-                    "nickname": "Moço"
+                "Address":{
+                    "country" : "Brasil",
+                    "state" : "Minas Gerais",
+                    "city" : "Belo Horizonte",
+                    "district": "São João Batista",
+                    "street" : "Rua Oswaldo Rosa Teixeira",
+                    "number" : 159,
+                    "zipCode" : "31510-500",
+                    "aditionalInformation" : "A"
                 }
             })
             .end((err, response) => {
                 expect(response.statusCode).toBe(200);
-                expect(response.body.updated).toBe(true);
+                expect(response.body.insertId).toBeDefined;
                 done();
-            })
+            }); 
     });
 
     it("Exclusão de usuário",(done) => {
@@ -78,4 +79,5 @@ describe('User', () => {
                 done();
             })
     });
-})
+
+});

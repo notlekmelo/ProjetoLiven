@@ -63,7 +63,6 @@ export const validaParamUpdate = (user: User, callback: Function) => {
     }
     else {
         const queryString = "SELECT Login FROM Users WHERE (Login = ?) AND (UserCode <> ?)";
-       console.log(user.userCode + "   " + user.login)
         dbconnection.query(
             queryString,
             [user.login, user.userCode],

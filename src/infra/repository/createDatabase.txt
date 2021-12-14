@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `Users`
         ModifiedAt DATETIME NULL
 	);
 
-CREATE TABLE IF NOT EXISTS `Adresses`
+CREATE TABLE IF NOT EXISTS `Addresses`
 	(
-		AdressCode INT NOT NULL AUTO_INCREMENT PRIMARY KEY,					
+		AddressCode INT NOT NULL AUTO_INCREMENT PRIMARY KEY,					
         UserCode INT NOT NULL,
         Country VARCHAR(30) NOT NULL, 
         State VARCHAR(50) NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS `Adresses`
         Street VARCHAR(80) NOT NULL,
         Number INT NOT NULL,
         ZipCode VARCHAR(20) NOT NULL,
-        AditionalInformation VARCHAR(30) NULL,
+        AdditionalInformation VARCHAR(30) NULL,
         CreatedAt DATETIME NOT NULL, 
         ModifiedAt DATETIME NULL,
-        CONSTRAINT FK_Users_Adresses_UserCode FOREIGN KEY (UserCode) REFERENCES Users(UserCode)
+        CONSTRAINT FK_Users_Addresses_UserCode FOREIGN KEY (UserCode) REFERENCES Users(UserCode) ON DELETE CASCADE
 	);

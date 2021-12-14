@@ -6,7 +6,7 @@ export interface MyToken {
     userCode: number;
 }
 
-export function ValidaToken(req: Request, res: Response, next: Function) {
+export function ValidaToken(req: Request, res: Response,next: Function) {
     const token = <string>req.headers['x-access-token'];
     var erro : string;
     erro = "";
@@ -27,7 +27,12 @@ export function ValidaToken(req: Request, res: Response, next: Function) {
             }
             else {
                 const id = jwt_decode<MyToken>(token)
-                return req.body.User.userCode = id.userCode;
+                if (req.body.User){
+                    return req.body.User.userCode = id.userCode;
+                }
+                else {
+                    return req.body.Address.userCode = id.userCode;
+                }
             }
         });
         if (erro == ""){
