@@ -24,7 +24,6 @@ export const validaParamCreate = (user: User, callback: Function) => {
                 if (err) {
                     callback(err,false, "Erro ao consultar banco de dados")
                 };
-    result
                 if((<RowDataPacket>result)[0]){
                     callback(null, false, "Login já existente");
                 }

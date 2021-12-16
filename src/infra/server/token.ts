@@ -30,8 +30,11 @@ export function ValidaToken(req: Request, res: Response,next: Function) {
                 if (req.body.User){
                     return req.body.User.userCode = id.userCode;
                 }
-                else {
+                else if(req.body.Address) {
                     return req.body.Address.userCode = id.userCode;
+                }
+                else {
+                    req.body.userCode = id.userCode;
                 }
             }
         });

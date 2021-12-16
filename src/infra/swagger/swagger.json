@@ -71,7 +71,7 @@
             }
         },
         "/login": {
-            "get": {
+            "post": {
                 "summary": "Login do usuário",
                 "description": "Com base no login e senha retorna um token de acesso",
                 "produces": [
@@ -134,18 +134,10 @@
                 ],
                 "parameters": [
                     {
+                        "name": "x-access-token",
                         "in": "header",
-                        "name": "header",
-                        "description": "Envia o Token",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "properties": {
-                                "token": {
-                                    "type": "string"
-                                }
-                            }
-                        }
+                        "type": "string",
+                        "required": true
                     },
                     {
                         "in": "body",
@@ -200,38 +192,15 @@
                 ],
                 "parameters": [
                     {
+                        "name": "x-access-token",
                         "in": "header",
-                        "name": "header",
-                        "description": "Envia o Token",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "properties": {
-                                "token": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto Usuário",
-                        "required": true,
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "User": {
-                                    "type": "object",
-                                    "$ref": "#/definitions/deleteUser"
-                                }
-                            }
-                        }
+                        "type": "string",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Usuário atualizado",
+                        "description": "Usuário deletado",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -247,6 +216,217 @@
                     },
                     "422": {
                         "description": "Parâmetro inválido",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/createAddress": {
+            "post": {
+                "summary": "Cria um endereço",
+                "description": "Cria um endereço para o usuário logado com base no token",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Objeto Address",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Address": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/Address"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço criado",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/createAddress"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/updateAddress": {
+            "post": {
+                "summary": "Atualiza um endereço",
+                "description": "Atualiza um endereço caso o usuário tenha permissão sobre ele",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Objeto Address",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Address": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/updateAddress"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço atualizado com sucesso",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/updateUserResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/deleteAddress": {
+            "post": {
+                "summary": "Atualiza um endereço",
+                "description": "Atualiza um endereço caso o usuário tenha permissão sobre ele",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Objeto Address apenas com código",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Address": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/deleteAddress"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Endereço excluído com sucesso",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/deleteUserResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Parâmetro inválido",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/getAllInfo": {
+            "get": {
+                "summary": "Lista todas as informações",
+                "description": "Lista todas as informações de um usuário específico e seus endereços vinculados",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "x-access-token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados recuperados com suceso",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/loginResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor de banco de dados",
                         "schema": {
                             "$ref": "#/definitions/InvalidResponse"
                         }
@@ -352,8 +532,85 @@
                 }
             }
         },
-        "token": {
-            "type": "string"
+        "Address": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "zipCode": {
+                    "type": "string"
+                },
+                "aditionalInformation": {
+                    "type": "string"
+                }
+            }
+        },
+        "createAddress": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "addressCode": {
+                    "type": "integer"
+                }
+            }
+        },
+        "updateAddress": {
+            "type": "object",
+            "properties": {
+                "addressCode": {
+                    "type": "integer"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "zipCode": {
+                    "type": "string"
+                },
+                "aditionalInformation": {
+                    "type": "string"
+                }
+            }
+        },
+        "deleteAddress": {
+            "type": "object",
+            "properties": {
+                "addressCode": {
+                    "type": "integer"
+                }
+            }
         }
     }
 }

@@ -3,20 +3,17 @@ import server from '../../infra/server/server';
 
 var token : string;
 
-describe('User', () => {
+describe('User with address', () => {
 
     it('create user', (done) => {
         request(server)
             .post('/createUser')
             .send({
                 "User": {
-                    "name": "Kelton Melo de Oliveira Fonseca",
-                    "login": "notlekmel1o",
-                    "password": "123",
-                    "nickname": "Kelton",
-                    "email": "keltonmof@gmail.com",
-                    "phoneNumber": "994701172",
-                    "job": "Programador"
+                    "name": "TesteGetAllInfo",
+                    "login": "testeGet",
+                    "password": "teste",
+                    "nickname": "Kelton"
                 }
             })
             .end((err, response) => {
@@ -31,8 +28,8 @@ describe('User', () => {
             .post('/login')
             .send({
                 "User":{
-                    "login" : "notlekmel1o",
-                    "password" : "123"
+                    "login" : "testeGet",
+                    "password" : "teste"
                 }
             })
             .end((err, response) => {
@@ -45,25 +42,40 @@ describe('User', () => {
             });
     });
 
-    it("Atualização de usuário",(done) => {
+    it('Criar um endereço vinculado a um usuário', (done) => {
         request(server)
-            .post('/updateUser')
+            .post('/createAddress')
             .set('x-access-token', token)
             .send({
-                "User":{
-                    "name": "Kelton Melo de Oliveira Fonseca",
-                    "login": "string",
-                    "password": "123",
-                    "nickname": "Moço"
+                "Address":{
+                    "country" : "teste",
+                    "state" : "testeInfo",
+                    "city" : "teste",
+                    "district": "teste",
+                    "street" : "teste",
+                    "number" : 15,
+                    "zipCode" : "teste"
                 }
             })
             .end((err, response) => {
                 expect(response.statusCode).toBe(200);
-                expect(response.body.updated).toBe(true);
+                expect(response.body.insertId).toBeDefined;
+                done();
+            }); 
+    });
+
+    it('Recupera todas as informações do usuário',(done) => {
+        request(server)
+            .get('/getAllInfo')
+            .set('x-access-token', token)
+            .end((err, response) => {
+                expect(response.statusCode).toBe(200);
+                expect(response.body.data).toBeDefined;
                 done();
             })
     });
 
+    // Exclui o usuário para (método on cascade exclui tambem o endereço) para realização de novos testes no futuro
     it("Exclusão de usuário",(done) => {
         request(server)
             .post('/deleteUser')
@@ -74,4 +86,4 @@ describe('User', () => {
                 done();
             })
     });
-})
+});

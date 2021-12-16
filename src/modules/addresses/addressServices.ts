@@ -56,3 +56,41 @@ export const deleteAddress = (address: Address, callback: Function) => {
         }
     )
 }
+
+export const getAddresses = (paramsQuery : string, callback: Function) => {
+    const queryString = "SELECT * FROM `Addresses` ";
+
+    dbconnection.query(
+        queryString + paramsQuery,
+        [],
+        (err, result) => {
+            if (err) {
+                callback(err)
+            }
+            else {
+            const rows = <RowDataPacket[]>result;
+            var resultAddresses: Address[] = []
+            rows.forEach(row => {
+                if (row.AddressCode) {
+                    const address: Address = {
+                        addressCode: row.AddressCode,
+                        userCode: row.Userode,
+                        country: row.Country,
+                        state: row.State,
+                        city: row.City,
+                        district: row.District,
+                        street: row.Street,
+                        number: row.Number,
+                        zipCode: row.ZipCode,
+                        additionalInformation: row.AdditionalInformation,
+                        createdAt: row.CriacaoEndereco,
+                        modifiedAt: row.ModificacaoEndereco
+                    }
+                    resultAddresses.push(address);
+                }
+            });
+            callback(null, resultAddresses);
+        }
+        }
+    )
+}
